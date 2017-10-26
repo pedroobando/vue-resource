@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>VueJs V2 | AJAX</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">  
+  
+</head>
+<body>
+  <div id="appVue" class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <h1>Lista VueJS - AJAX</h1>
+        <div class="alert alert-info alert-dismissible" role="alert" v-if="modalShow">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" v-on:click="modalShow = false" ><span aria-hidden="true">&times;</span></button>
+            <img v-bind:src="people.picture.large" v-bind:alt="people.name.last" sizes="" srcset=""><br>
+            <strong>Nombre</strong> {{ people.name.first }} {{ people.name.last }}
+            <hr>
+            <strong>Calle</strong> {{ people.location.street }} <br>
+            <strong>Ciudad</strong> {{ people.location.city }} <br>
+            <strong>Estado</strong> {{ people.location.state }} <br>
+            <strong>C.Postal</strong> {{ people.location.postcode }} <br>
+            <strong>E-mail:</strong> {{ people.email }}<br>
+            <strong>Phone:</strong> {{ people.phone }}<br>
+            <strong>Cel:</strong> {{ people.cell }}<br>
+            
+        </div>
+
+        <ul class="list-group" >
+          <li class="list-group-item" v-for="(item, index) in lists" v-on:click="showPeople(index, item)" >
+            {{ item.name.first }} {{ item.name.last }}
+            <!-- {{ item.name }} -->
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-8">
+        <h1>JASON</h1>
+        <pre>
+          {{ $data }}
+        </pre>
+      </div>
+    </div>
+  </div>
+  <!-- <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script> -->
+  <script src="vue.js"></script>
+  <script src="vue-resource.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
