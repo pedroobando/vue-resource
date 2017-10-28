@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>VueJs V2 | AJAX C/AXIOS.JS</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">  
+  
+</head>
+<body>
+  <div id="appVue" class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <h1>
+          Vuejs - filtros
+        </h1>
+        <button type="button" class="btn btn-default btn-sm" v-on:click="getUsers" v-if="!lists.length">
+            <span class="glyphicon glyphicon-user"></span> Mostrar
+        </button>
+        <ul class="list-group" v-else>
+          <li class="list-group-item" >
+            <button class="btn btn-primary" v-on:click="getUsers">
+              <span class="glyphicon glyphicon-refresh"></span> Recargar la lista</button>
+            <button class="btn btn-default" v-on:click="clearList">
+              <span class="glyphicon glyphicon-remove"></span> Limpiar lista</button>
+          </li>
+          <li class="list-group-item" >
+            <input type="text" placeholder="Indique el nombre" class="form-control" v-model="name">
+          </li>
+          <li class="list-group-item" v-for="(item, index) in searchUser" v-on:click="showPeople(index, item)" >
+            {{ item.name.first }} {{ item.name.last }}
+          </li>
+      
+        </ul>
+      </div>
+      <div class="col-sm-8">
+        <h1>JSON</h1>
+        <div class="alert alert-info alert-dismissible" role="alert" v-if="!(Object.keys(people).length === 0)">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" v-on:click="people = {}" ><span aria-hidden="true">&times;</span></button>
+            <img v-bind:src="people.picture.large" v-bind:alt="people.name.last" sizes="" srcset=""><br>
+            <strong>Nombre</strong> {{ people.name.first }} {{ people.name.last }}
+            <hr>
+            <strong>Calle</strong> {{ people.location.street }} <br>
+            <strong>Ciudad</strong> {{ people.location.city }} <br>
+            <strong>Estado</strong> {{ people.location.state }} <br>
+            <strong>C.Postal</strong> {{ people.location.postcode }} <br>
+            <strong>E-mail:</strong> {{ people.email }}<br>
+            <strong>Phone:</strong> {{ people.phone }}<br>
+            <strong>Cel:</strong> {{ people.cell }}<br>
+        </div>
+        <pre>
+          {{ $data | json }}
+        </pre>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.0/axios.min.js"></script>
+  <script src="vue.js"></script>
+  <!-- <script src="mainfiltros.js"></script>   -->
+  <script type="text/javascript">
+    let urlUsers = 'https://randomuser.me/api';
+
+    new Vue({
+      el: "#appVue",
+      data: {
+        name: '',
+        people: {},
+        lists : []        
+      },
+
+      methods: {
+        getUsers: function () {
+          axios.get(urlUsers, {
+            params: {
+              results: 15
+            }
+          }).then(larespuesta => {
+            this.lists = larespuesta.data.results;
+          });
+          this.name = '';
+          this.people = {};
+        },
+        showPeople: function (index, thePeople) {
+          this.people = thePeople;
+        },
+        clearList : function() {
+          this.name = '';
+          this.people = {};
+          this.lists = [];
+        }
+      },
+
+      computed: {
+        searchUser: function() {
+          return this.lists.filter((item) => item.name.first.includes(this.name) || item.name.last.includes(this.name)) ;
+        }
+      }
+    })
+  </script>
+
+</body>
+</html>
